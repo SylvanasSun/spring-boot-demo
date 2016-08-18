@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.sun.sylvanas.spring_boot_starter_hello.HelloServiceAutoConfiguration

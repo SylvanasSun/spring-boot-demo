@@ -11,9 +11,11 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>$</title>
+    <title>Spring Testing Page</title>
 </head>
 <body>
-$
+    <pre>
+        Welcome to Spring MVC world.
+    </pre>
 </body>
 </html>

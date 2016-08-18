@@ -1,17 +1,26 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
 <head>
     <meta content="text/html;charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <!-- 导入bootstrap -->
-    <link th:href="@{bootstrap/css/bootstrap.min.css}" ref="stylesheet"/>
-    <link th:href="@{bootstrap/css/bootstrap-theme.min.css}" ref="stylesheet"/>
+    <title>登录页面</title>
 </head>
 <body>
-<!-- 导入jQuery -->
-<script th:src="@{jquery-3.1.0.min.js}"/>
-<script th:src="@{bootstrap/js/bootstrap.min.js}"/>
+    <div th:if="${param.error}">
+        无效的账号和密码.
+    </div>
+    <div th:if="${param.logout}">
+        已注销
+    </div>
+    <form th:action="@{/login}" method="post">
+        <div><label>账号: <input type="text" name="username"/></label></div>
+        <div><label>密码: <input type="password" name="password"/></label></div>
+        <div><input type="submit" value="登录"/></div>
+    </form>
 </body>
 
 </html>    

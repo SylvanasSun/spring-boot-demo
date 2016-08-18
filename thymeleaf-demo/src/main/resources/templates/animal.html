@@ -3,13 +3,46 @@
 <head>
     <meta content="text/html;charset=UTF-8"/>
     <!-- 导入bootstrap -->
-    <link th:src="@{bootstrap/css/bootstrap.min.css}" ref="stylesheet"/>
-    <link th:src="@{bootstrap/css/bootstrap-theme.min.css}" ref="stylesheet"/>
+    <link th:href="@{bootstrap/css/bootstrap.min.css}" ref="stylesheet"/>
+    <link th:href="@{bootstrap/css/bootstrap-theme.min.css}" ref="stylesheet"/>
 </head>
 <body>
 <!-- 导入jQuery -->
-<script th:src="@{jquery-1.10.2.min.js}" type="text/javascript"/>
+<script th:src="@{jquery-3.1.0.min.js}" type="text/javascript"/>
 <script th:src="@{bootstrap/js/bootstrap.min.js}"/>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">访问Model</div>
+        <div class="panel-body">
+            <span th:text="${singleAnimal.name}"/>
+            <span th:text="${singleAnimal.age}"/>
+        </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(animal)}">
+        <div class="panel panel-default">
+            <div class="panel-heading">列表</div>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="animal:${animal}">
+                    <span th:text="${animal.name}"></span>
+                    <span th:text="${animal.age}"></span>
+                    <button class="btn" th:onclick="'getName(\''+${animal.name}+'\')'">将姓名打印到控制台</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+<script th:inline="javascript">
+    var single = [[${singleAnimal}]];
+    console.log(single.name +"-"+single.age);
+
+    function getName(name){
+        console.log(name);
+    }
+
+</script>
+
 </body>
 
 </html>    

@@ -11,9 +11,21 @@
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>$</title>
+    <title></title>
 </head>
 <body>
-$
+<script type="text/javascript" src="assets/js/jquery-3.1.0.js"></script>
+<script type="text/javascript">
+
+    deferred();
+
+    function deferred(){
+        $.get('defer',function(data){
+            console.log(data);
+            deferred();
+        });
+    }
+
+</script>
 </body>
 </html>

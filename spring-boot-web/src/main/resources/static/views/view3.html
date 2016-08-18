@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="row">
+    <label for="attr" class="col-md-2 control-label">名称</label>
+    <div class="col-md-2">
+        <input type="text" class="form-control" ng-model="animalName" />
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary" ng-click="findAnimal()">查询</button>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item">{{animal.name}}</li>
+                <li class="list-group-item">{{animal.age}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

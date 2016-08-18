@@ -1,9 +1,9 @@
 
 create table PERSON
 (
-  id          NUMBER not null primary key,
+  id          BIGINT not null primary key,
   name        VARCHAR2(20),
-  age         NUMBER,
+  age         INTEGER,
   nation      VARCHAR2(20),
   address     VARCHAR2(20)
 );

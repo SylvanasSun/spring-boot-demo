@@ -7,14 +7,49 @@
     <meta content="text/html;charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <!-- 导入bootstrap -->
-    <link th:href="@{bootstrap/css/bootstrap.min.css}" ref="stylesheet"/>
-    <link th:href="@{bootstrap/css/bootstrap-theme.min.css}" ref="stylesheet"/>
+    <script th:src="@{jquery-3.1.0.min.js}"/>
+    <script th:src="@{stomp.min.js}"/>
+    <script th:src="@{sockjs-1.0.0.min.js}"/>
 </head>
 <body>
-<!-- 导入jQuery -->
-<script th:src="@{jquery-3.1.0.min.js}"/>
-<script th:src="@{bootstrap/js/bootstrap.min.js}"/>
+<p>
+    聊天室
+</p>
+
+<form id="chatForm">
+    <textarea rows="4" cols="60" name="text"></textarea>
+    <input type="submit"/>
+</form>
+
+<script th:inline="javascript">
+    $('#chatForm').submit(function(e){
+        e.preventDefault();
+        var text = $('#chatForm').find('textarea[name="text"]').val();
+        sendSpittle(text);
+    });
+
+    var socket = new SockJS("/endpointChat");
+    var stomp = Stomp.over(socket);
+    stomp.connect('guest','guest',function(frame){
+        // 与messagingTemplate.convertAndSendToUser中定义的订阅地址保持一致
+        // 但前面要多出一个/user,这个/user是必须的,只有使用了/user才会发送消息到指定的用户.
+        stomp.subscribe("/user/queue/notifications",handleNotification);
+    });
+
+    function handleNotification(message){
+        $("#output").append("<b>Received: " + message.body + "</b><br/>");
+    }
+
+    function sendSpittle(text){
+        stomp.send("/chat",{},text);
+    }
+
+    $('#stop').click(function(){socket.close()});
+
+</script>
+
+<div id="output"></div>
+
 </body>
 
 </html>    

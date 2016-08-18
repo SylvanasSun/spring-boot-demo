@@ -4,14 +4,68 @@
     <meta content="text/html;charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <!-- 导入bootstrap -->
-    <link th:href="@{bootstrap/css/bootstrap.min.css}" ref="stylesheet"/>
-    <link th:href="@{bootstrap/css/bootstrap-theme.min.css}" ref="stylesheet"/>
+    <title>Spring Boot+WebSocket+广播式</title>
 </head>
-<body>
+<body onload="disconnect()">
+<noscript><h2 style="color: #ff0000">貌似你的浏览器不支持websocket</h2></noscript>
+<div>
+    <div>
+        <button id="connect" onclick="connect();">连接</button>
+        <button id="disconnect" onclick="disconnect();">断开连接</button>
+    </div>
+    <div id="conversationDiv">
+        <label>输入你的名字</label><input type="text" id="name"/>
+        <button id="sendName" onclick="sendName();">发送</button>
+        <p id="response"></p>
+    </div>
+</div>
 <!-- 导入jQuery -->
-<script th:src="@{jquery-3.1.0.js}" type="text/javascript"/>
-<script th:src="@{bootstrap/js/bootstrap.min.js}"/>
+<script th:src="@{jquery-3.1.0.min.js}"/>
+<script th:src="@{sockjs-1.0.0.min.js}"/>
+<script th:src="@{stomp.min.js}"/>
+<script type="text/javascript">
+    var stompClient = null;
+
+    function setConnected(connected) {
+        document.getElementById('connect').disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+        $('#response').html();
+    }
+
+    function connect() {
+        var socket = new SockJS('/endpointSun');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            // 订阅/topic/getResponse
+            stompClient.subscribe('/topic/getResponse',function(response){
+                showResponse(JSON.parse(response.body).responseMessage);
+            });
+        });
+    }
+
+    function disconnect() {
+        if(stompClient != null){
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendName() {
+        var name = $('#name').val();
+        // 发送到/welcome
+        stompClient.send("/welcome",{},JSON.stringify({'name':name}));
+    }
+
+    function showResponse(message){
+        var response = $("#response");
+        response.html(message);
+    }
+
+</script>
 </body>
 
 </html>    
